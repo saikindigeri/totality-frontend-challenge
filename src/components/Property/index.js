@@ -251,7 +251,7 @@ const Property = () => {
                         <p className="card-text">{property.bedrooms} Bedrooms</p>
                         <p className="card-text">Amenities: {property.amenities.join(', ')}</p>
                         <Link to={`/property/${property.id}`}>
-                          <button className="btn btn-primary" onClick={() => addToCart(property)}>Book Now</button>
+                          <button className="btn btn-primary" >View Details</button>
                         </Link>
                       </div>
                     </div>

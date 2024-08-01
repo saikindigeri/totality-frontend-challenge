@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const onClickLogout = () => {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
@@ -32,7 +32,7 @@ const Header = () => {
             className="d-inline-block align-text-top"
             style={{ height: '40px' }} 
           />
-        </Link>
+        </Link> 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

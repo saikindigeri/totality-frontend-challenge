@@ -13,15 +13,18 @@ const Home = () => {
   };
 
   const name = localStorage.getItem('username');
-
+const token=localStorage.getItem('token') 
+console.log(token)
   return (
     <>
       <Header />
       <Container className="mt-5">
        
         <div className="landing-page">
+          
           <header className="text-center mb-5">
-            <h1>Welcome {name} to PropertyPro</h1>
+          <h1 className='name-style'>Hello {name}</h1>
+            <h3>Welcome to PropertyPro</h3>
             <p>Your ultimate solution for managing and booking properties seamlessly.</p>
             <Button href="/register" variant="primary" className="cta-button">
               Get Started

@@ -1,140 +1,94 @@
-
-
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-
+import './index.css'; 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        user_email: '',
-        user_password: '',
-    });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const isAuthenticated = localStorage.getItem('token');
 
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
 
-    const navigate = useNavigate();
-    const [errors, setErrors] = useState({});
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-        setErrors({
-            ...errors,
-            [name]: '',
-        });
-    };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('https://keep-backend-1.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const validateForm = () => {
-        let valid = true;
-        let newErrors = {};
+      if (!response.ok) {
+        throw new Error('Login failed.');
+      }
 
-        if (!formData.user_email) {
-            valid = false;
-            newErrors.user_email = 'Email is required';
-        }
-        if (!formData.user_password) {
-            valid = false;
-            newErrors.user_password = 'Password is required';
-        }
+      const data = await response.json();
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('token', data.token);
+    
+      setError('Login successful!');
+      setTimeout(() => {
+        navigate('/');
+      }, 4000); 
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Login failed. Please check your credentials and try again.');
+    }
+  };
 
-        setErrors(newErrors);
-        return valid;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!validateForm()) {
-            return;
-        }
-
-        try {
-            const response = await axios.post('https://syoft.dev/Api/userlogin/api/userlogin', {
-                user_email: formData.user_email,
-                user_password: formData.user_password,
-            });
-
-            if (response.data.status) {
-                const userData = response.data.user_data[0];
-                localStorage.setItem('username', userData.user_firstname);
-                setSuccessMessage('Successful Login!');
-                
-                setTimeout(() => navigate('/'), 2000); 
-            } else {
-                setErrorMessage(response.data.msg);
-            }
-        } catch (error) {
-            setErrors({ global: 'An error occurred. Please try again.' });
-            console.error(error);
-        }
-    };
-
-    const handleNew = () => {
-        navigate("/register");
-    };
-
-    return (
-        <Container className="login-container mt-5">
-            <div className="text-center mb-4">
-                <h1 className="display-4">Welcome Back!</h1>
-                <p className="lead">Login to access your account and manage your profile.</p>
+  return (
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-8 col-lg-6">
+          <div className="card shadow-lg border-0 rounded-lg my-5 animate__animated animate__fadeIn animate__delay-1s">
+            <div className="card-header  text-center ">
+              <h3 className="fw-light my-2">Login</h3>
             </div>
-            <div className="form-container">
-                <Form onSubmit={handleSubmit} className="shadow p-4 rounded bg-light">
-                    {errors.global && <Alert variant="danger">{errors.global}</Alert>}
-                    {successMessage && <Alert variant="success">{successMessage}</Alert>}
-                    {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-
-                    <Form.Group controlId="formBasicEmail" className="mb-3">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="Enter your email"
-                            name="user_email"
-                            value={formData.user_email}
-                            onChange={handleChange}
-                            isInvalid={!!errors.user_email}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.user_email}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
-                    <Form.Group controlId="formBasicPassword" className="mb-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="Enter your password"
-                            name="user_password"
-                            value={formData.user_password}
-                            onChange={handleChange}
-                            isInvalid={!!errors.user_password}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.user_password}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
-                    <Button variant="primary" type="submit" className="w-100">
-                        Login
-                    </Button>
-
-                    <div className="text-center mt-3">
-                        <p onClick={handleNew} className="text-primary cursor-pointer">
-                            Don't have an account? Create a new account!
-                        </p>
-                    </div>
-                </Form>
+            <div className="card-body">
+              <form onSubmit={handleLogin}>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    id="username"
+                    className="form-control"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    placeholder="Username"
+                  />
+                  <label htmlFor="username">Username</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type="password"
+                    id="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="Password"
+                  />
+                  <label htmlFor="password">Password</label>
+                </div>
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
+                <button type="submit" className="btn btn-primary w-100 py-2 mt-3">Login</button>
+                <div className="text-center mt-4">
+                  <p className="mb-0">Don't have an account? <a href="/register" className="text-primary">Register here</a></p>
+                </div>
+              </form>
             </div>
-        </Container>
-    );
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

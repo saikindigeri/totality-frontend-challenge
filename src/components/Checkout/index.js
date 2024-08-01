@@ -5,7 +5,7 @@ import './index.css';
 import Header from '../Header';
 
 const Checkout = () => {
-  const { cartList } = useContext(CartContext);
+  const { cartList ,clearCart} = useContext(CartContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +21,8 @@ const Checkout = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
+   clearCart()
  
     console.log('Form data submitted:', formData);
     setIsSuccess(true); 
