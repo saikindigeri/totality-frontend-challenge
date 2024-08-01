@@ -1,0 +1,29 @@
+
+.property-image {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.property-details-card {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.property-details-card .card-title {
+  color: #ffcc00; 
+}
+
+.property-details-card .card-text {
+  color: #333;
+}
+
+.btn-warning {
+  background-color: #ffcc00; 
+  border-color: #ffcc00;
+}
+
+.btn-warning:hover {
+  background-color: #e6b800; 
+  border-color: #e6b800;
+}

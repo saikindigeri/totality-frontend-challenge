@@ -1,0 +1,43 @@
+
+.custom-navbar {
+  padding: 1px 1px; 
+  font-size: 0.7rem; 
+}
+
+
+.website-logo {
+  height: 30px; 
+  transition: transform 0.3s ease, filter 0.3s ease; 
+}
+
+
+
+.navbar-nav .nav-link {
+  padding: 1px 1px; 
+}
+
+
+.nav-link:hover{
+  color: blue;
+}
+
+.navbar-toggler {
+  padding: 0.1rem 0.2rem; 
+}
+
+
+.logout-button {
+  border-color: #ffeb3b; 
+  color: #ffeb3b; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
+  padding: 2px 8px; 
+  font-size: 0.7rem; 
+}
+
+
+.logout-button:hover {
+  background-color: #ffeb3b; 
+  color: #000000; 
+  transform: scale(1.05);
+}
