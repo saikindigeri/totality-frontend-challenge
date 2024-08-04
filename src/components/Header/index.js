@@ -49,10 +49,11 @@ const Header = () => {
                 Cart {renderCartItemsCount()}
               </Link>
             </li>
-            <li className="nav-item mb-3">
+           
+          </ul>
+          <li className="nav-item ">
               <button onClick={onClickLogout} className="btn btn-outline-danger ms-3">Logout</button>
             </li>
-          </ul>
         </div>
       </div>
     </nav>
